@@ -66,13 +66,13 @@ export default function Letter({
           variants={item}
           className="rounded-md border border-gold/40 p-1 shadow-[0_8px_26px_-10px_rgba(184,147,47,0.4)]"
         >
-          <div className="relative h-28 w-24 overflow-hidden rounded-sm sm:h-32 sm:w-28">
+          <div className="relative h-36 w-24 overflow-hidden rounded-sm sm:h-40 sm:w-28">
             <Image
               src={invitation.photo}
               alt={`รูป${invitation.nakName}`}
               fill
-              sizes="112px"
-              className="object-cover"
+              sizes="(min-width: 640px) 112px, 96px"
+              className="object-cover object-[center_22%]"
               priority
             />
           </div>
