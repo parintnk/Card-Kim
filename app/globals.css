@@ -138,20 +138,8 @@ body {
   animation-delay: calc(1.7s + var(--i, 0) * 0.13s);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .idle-float,
-  .env-body,
-  .env-pocket,
-  .env-letter,
-  .env-flap,
-  .env-seal {
-    animation: none;
-  }
-  .env-intro {
-    display: none;
-  }
-  .reveal-item {
-    opacity: 1;
-    animation: none;
-  }
-}
+/*
+ * Note: by request, the opening animation always plays — we intentionally do NOT
+ * gate it behind `prefers-reduced-motion` so it runs even in iOS Low Power Mode
+ * (a one-time celebratory invitation reveal).
+ */
