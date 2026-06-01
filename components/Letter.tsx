@@ -1,11 +1,10 @@
-"use client";
-
 import Image from "next/image";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import type { CSSProperties } from "react";
 import type { Invitation } from "@/data/invitation";
 import Schedule from "@/components/Schedule";
 
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+/** Stagger index for the CSS reveal-up animation. */
+const at = (i: number) => ({ "--i": i }) as CSSProperties;
 
 function Divider() {
   return (
@@ -17,54 +16,26 @@ function Divider() {
   );
 }
 
-export default function Letter({
-  invitation,
-  start = true,
-}: {
-  invitation: Invitation;
-  start?: boolean;
-}) {
-  const reduce = useReducedMotion();
-
-  const container: Variants = {
-    hidden: {},
-    show: {
-      transition: reduce ? {} : { delayChildren: 0.15, staggerChildren: 0.13 },
-    },
-  };
-  const item: Variants = {
-    hidden: reduce ? { opacity: 1 } : { opacity: 0, y: 22 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: reduce ? { duration: 0 } : { duration: 0.8, ease: EASE_OUT },
-    },
-  };
-
+export default function Letter({ invitation }: { invitation: Invitation }) {
   return (
     <div className="flex min-h-dvh w-full items-center justify-center px-4 py-3">
-      <motion.article
-        variants={container}
-        initial="hidden"
-        animate={start ? "show" : "hidden"}
-        className="relative flex w-full max-w-sm flex-col items-center gap-3 rounded-2xl border border-gold/25 bg-white/80 px-6 py-5 text-center shadow-[0_24px_70px_-28px_rgba(120,100,50,0.45)] backdrop-blur-sm sm:gap-4 sm:py-7"
-      >
+      <article className="relative flex w-full max-w-sm flex-col items-center gap-3 rounded-2xl border border-gold/25 bg-white/80 px-6 py-5 text-center shadow-[0_24px_70px_-28px_rgba(120,100,50,0.45)] backdrop-blur-sm sm:gap-4 sm:py-7">
         <span
           aria-hidden
           className="pointer-events-none absolute inset-1.5 rounded-xl border border-gold/15"
         />
 
-        <motion.div variants={item} className="flex flex-col items-center gap-1.5">
+        <div className="reveal-item flex flex-col items-center gap-1.5" style={at(0)}>
           <span className="text-xl text-gold-deep">❀</span>
           <p className="font-sans text-[10px] uppercase tracking-[0.4em] text-muted">
             ขอเรียนเชิญ
           </p>
           <h1 className="font-serif text-2xl leading-tight text-ink">งานอุปสมบท</h1>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={item}
-          className="rounded-md border border-gold/40 p-1 shadow-[0_8px_26px_-10px_rgba(184,147,47,0.4)]"
+        <div
+          className="reveal-item rounded-md border border-gold/40 p-1 shadow-[0_8px_26px_-10px_rgba(184,147,47,0.4)]"
+          style={at(1)}
         >
           <div className="relative h-36 w-24 overflow-hidden rounded-sm sm:h-40 sm:w-28">
             <Image
@@ -76,29 +47,29 @@ export default function Letter({
               priority
             />
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div variants={item} className="flex flex-col items-center gap-0.5">
+        <div className="reveal-item flex flex-col items-center gap-0.5" style={at(2)}>
           <h2 className="font-serif text-lg text-ink">{invitation.nakName}</h2>
           <p className="font-sans text-xs text-muted">{invitation.parents}</p>
           <p className="font-sans text-xs text-muted">{invitation.templeOrVenue}</p>
-        </motion.div>
+        </div>
 
-        <motion.p
-          variants={item}
-          className="max-w-68 font-sans text-[11.5px] leading-5 text-ink/85"
+        <p
+          className="reveal-item max-w-68 font-sans text-[11.5px] leading-5 text-ink/85"
+          style={at(3)}
         >
           {invitation.invitationText}
-        </motion.p>
+        </p>
 
-        <motion.div variants={item} className="w-full">
+        <div className="reveal-item w-full" style={at(4)}>
           <Divider />
-        </motion.div>
+        </div>
 
-        <motion.div variants={item} className="w-full">
+        <div className="reveal-item w-full" style={at(5)}>
           <Schedule days={invitation.schedule} />
-        </motion.div>
-      </motion.article>
+        </div>
+      </article>
     </div>
   );
 }

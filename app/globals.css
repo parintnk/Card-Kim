@@ -34,3 +34,124 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+/* ---- Invitation animations (pure CSS) ---------------------------------- */
+
+@keyframes idle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes flap-open {
+  from {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: rotateX(-162deg);
+    opacity: 0;
+  }
+}
+
+@keyframes seal-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes letter-rise {
+  from {
+    transform: translate(-50%, 14px);
+  }
+  to {
+    transform: translate(-50%, -172px);
+  }
+}
+
+@keyframes soft-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes overlay-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* closed envelope: gentle breathing + press feedback */
+.env-btn {
+  transition: transform 0.18s ease;
+}
+.env-btn:active {
+  transform: scale(0.97);
+}
+.idle-float {
+  animation: idle-float 3.6s ease-in-out infinite;
+}
+
+/* opening overlay + its parts */
+.env-intro {
+  animation: overlay-out 0.55s ease-in 1.45s forwards;
+}
+.env-body,
+.env-pocket {
+  animation: soft-fade 0.5s ease 0.95s forwards;
+}
+.env-letter {
+  animation: letter-rise 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+}
+.env-flap {
+  animation: flap-open 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+.env-seal {
+  animation: seal-out 0.45s ease-in 0.1s both;
+}
+
+/* staggered content reveal inside the letter */
+.reveal-item {
+  opacity: 0;
+  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(1.7s + var(--i, 0) * 0.13s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .idle-float,
+  .env-body,
+  .env-pocket,
+  .env-letter,
+  .env-flap,
+  .env-seal {
+    animation: none;
+  }
+  .env-intro {
+    display: none;
+  }
+  .reveal-item {
+    opacity: 1;
+    animation: none;
+  }
+}
