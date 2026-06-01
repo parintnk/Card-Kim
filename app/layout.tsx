@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Thai, Noto_Serif_Thai } from "next/font/google";
+import { Noto_Sans_Thai, Noto_Serif_Thai, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
 const notoSansThai = Noto_Sans_Thai({
@@ -11,7 +11,13 @@ const notoSansThai = Noto_Sans_Thai({
 const notoSerifThai = Noto_Serif_Thai({
   variable: "--font-noto-serif-thai",
   subsets: ["thai", "latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="th"
-      className={`${notoSansThai.variable} ${notoSerifThai.variable} antialiased`}
+      className={`${notoSansThai.variable} ${notoSerifThai.variable} ${cormorant.variable} antialiased`}
     >
       <body className="min-h-full">{children}</body>
     </html>
