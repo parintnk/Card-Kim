@@ -6,20 +6,33 @@ import type { Invitation } from "@/data/invitation";
 import Letter from "@/components/Letter";
 
 const FLAP_CLIP = "polygon(0 0, 100% 0, 50% 100%)";
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+/** The masthead shared by the rising mini-letter and the real letter, for continuity. */
+function Masthead({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <span className={compact ? "text-lg text-gold-deep" : "text-xl text-gold-deep"}>❀</span>
+      <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-muted">
+        ขอเรียนเชิญ
+      </p>
+      <p className={`font-serif text-ink ${compact ? "text-base" : "text-2xl"}`}>
+        งานอุปสมบท
+      </p>
+    </div>
+  );
+}
 
 /** Static sealed envelope shown before opening. */
 function ClosedEnvelope() {
   return (
     <div className="relative h-52 w-80 max-w-[78vw]">
-      {/* body + front pocket */}
       <div className="absolute inset-0 rounded-md border border-line bg-white shadow-md" />
       <div className="absolute inset-x-0 bottom-0 h-[55%] rounded-b-md border-x border-b border-line bg-[#fbf9f4]" />
-      {/* closed flap */}
       <div
         className="absolute left-0 top-0 h-[58%] w-full border-b border-line bg-[#f3efe6]"
         style={{ clipPath: FLAP_CLIP }}
       />
-      {/* wax seal at the flap tip */}
       <div className="absolute left-1/2 top-[46%] flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-gold bg-white text-gold-deep shadow-sm">
         ❀
       </div>
@@ -27,52 +40,65 @@ function ClosedEnvelope() {
   );
 }
 
-/** Full-screen overlay that plays the envelope opening, then removes itself. */
+/**
+ * Full-screen overlay that plays the opening, then removes itself:
+ * seal lifts → flap unfolds and fades → letter springs up → scene fades to the letter.
+ */
 function EnvelopeIntro({ onDone }: { onDone: () => void }) {
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-cream px-6"
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
-      transition={{ delay: 2.0, duration: 0.55, ease: "easeInOut" }}
+      transition={{ delay: 1.0, duration: 0.35, ease: "easeIn" }}
       onAnimationComplete={onDone}
     >
-      <div className="relative h-52 w-80 max-w-[78vw]" style={{ perspective: 900 }}>
+      <div className="relative h-52 w-80 max-w-[78vw]" style={{ perspective: 1000 }}>
         {/* body */}
-        <div className="absolute inset-0 rounded-md border border-line bg-white shadow-md" />
-
-        {/* the letter rising out of the envelope (behind the front pocket) */}
         <motion.div
-          className="absolute left-1/2 top-3 flex h-44 w-64 max-w-[68vw] -translate-x-1/2 flex-col items-center gap-2 rounded-sm border border-line bg-white pt-7 shadow"
-          style={{ zIndex: 1 }}
-          initial={{ y: 10 }}
-          animate={{ y: -150 }}
-          transition={{ delay: 1.05, duration: 0.85, ease: "easeOut" }}
-        >
-          <span className="text-lg text-gold-deep">❀</span>
-          <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-muted">
-            ขอเรียนเชิญ
-          </p>
-          <p className="font-serif text-base text-ink">งานอุปสมบท</p>
-        </motion.div>
-
-        {/* front pocket — hides the letter until it clears the top */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-[55%] rounded-b-md border-x border-b border-line bg-[#fbf9f4]"
-          style={{ zIndex: 2 }}
+          className="absolute inset-0 rounded-md border border-line bg-white shadow-md"
+          style={{ zIndex: 10 }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ delay: 0.6, duration: 0.3 }}
         />
 
-        {/* flap that swings open */}
+        {/* letter springing up out of the pocket (behind the front panel) */}
+        <motion.div
+          className="absolute left-1/2 top-3 flex h-44 w-64 max-w-[68vw] -translate-x-1/2 flex-col items-center justify-start gap-2 rounded-sm border border-line bg-white pt-8 shadow"
+          style={{ zIndex: 15 }}
+          initial={{ y: 12 }}
+          animate={{ y: -168 }}
+          transition={{ type: "spring", stiffness: 130, damping: 17, delay: 0.42 }}
+        >
+          <Masthead compact />
+        </motion.div>
+
+        {/* front pocket — keeps the letter tucked until it clears the top edge */}
+        <motion.div
+          className="absolute inset-x-0 bottom-0 h-[55%] rounded-b-md border-x border-b border-line bg-[#fbf9f4]"
+          style={{ zIndex: 20 }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ delay: 0.6, duration: 0.3 }}
+        />
+
+        {/* flap lifts open AND fades, so it never occludes the rising letter */}
         <motion.div
           className="absolute left-0 top-0 h-[58%] w-full origin-top border-b border-line bg-[#f3efe6]"
-          style={{ clipPath: FLAP_CLIP, zIndex: 3 }}
-          initial={{ rotateX: 0 }}
-          animate={{ rotateX: 175 }}
-          transition={{ delay: 0.45, duration: 0.7, ease: "easeInOut" }}
+          style={{ clipPath: FLAP_CLIP, zIndex: 30 }}
+          initial={{ rotateX: 0, opacity: 1 }}
+          animate={{ rotateX: -165, opacity: 0 }}
+          transition={{ delay: 0.12, duration: 0.5, ease: EASE_OUT }}
         >
-          <div className="absolute left-1/2 top-[46%] flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-gold bg-white text-gold-deep shadow-sm">
+          <motion.div
+            className="absolute left-1/2 top-[46%] flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-gold bg-white text-gold-deep shadow-sm"
+            initial={{ scale: 1, opacity: 1 }}
+            animate={{ scale: 0.5, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeIn" }}
+          >
             ❀
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </motion.div>
@@ -92,11 +118,12 @@ export default function Envelope({ invitation }: { invitation: Invitation }) {
           onClick={() => setOpened(true)}
           aria-label="เปิดการ์ดเชิญ"
           className="flex cursor-pointer flex-col items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-cream"
-          animate={reduceMotion ? undefined : { y: [0, -6, 0] }}
+          whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+          animate={reduceMotion ? undefined : { y: [0, -4, 0] }}
           transition={
             reduceMotion
               ? undefined
-              : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }
+              : { duration: 3.2, repeat: Infinity, ease: "easeInOut" }
           }
         >
           <ClosedEnvelope />
@@ -112,10 +139,12 @@ export default function Envelope({ invitation }: { invitation: Invitation }) {
   return (
     <main className="relative min-h-full w-full bg-cream">
       <motion.div
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={reduceMotion ? false : { opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={
-          reduceMotion ? { duration: 0 } : { delay: 1.85, duration: 0.7, ease: "easeOut" }
+          reduceMotion
+            ? { duration: 0 }
+            : { delay: 0.95, duration: 0.45, ease: "easeOut" }
         }
         className="w-full"
       >
