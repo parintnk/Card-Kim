@@ -2,26 +2,24 @@ import type { ScheduleDay } from "@/data/invitation";
 
 export default function Schedule({ days }: { days: ScheduleDay[] }) {
   return (
-    <div className="flex flex-col gap-12">
+    <div className="grid w-full grid-cols-2 gap-x-4">
       {days.map((day) => (
-        <section key={day.date} className="flex flex-col gap-5">
-          <h3 className="flex items-center justify-center gap-3 font-serif text-lg tracking-wide text-ink">
-            <span aria-hidden className="h-px w-6 bg-gold/50" />
+        <section key={day.date} className="flex flex-col items-center gap-2.5">
+          <h3 className="flex items-center gap-2 font-serif text-sm tracking-wide text-ink">
+            <span aria-hidden className="h-px w-4 bg-gold/50" />
             {day.date}
-            <span aria-hidden className="h-px w-6 bg-gold/50" />
+            <span aria-hidden className="h-px w-4 bg-gold/50" />
           </h3>
-          <ul className="mx-auto flex w-full max-w-76 flex-col">
-            {day.events.map((event, i) => (
+          <ul className="flex flex-col gap-2.5">
+            {day.events.map((event) => (
               <li
                 key={`${event.time}-${event.title}`}
-                className={`flex items-baseline gap-4 py-3 ${i > 0 ? "border-t border-line" : ""}`}
+                className="flex flex-col items-center leading-tight"
               >
-                <span className="w-22 shrink-0 text-right font-display text-lg leading-none tracking-wide text-gold-deep">
+                <span className="font-display text-base tracking-wide text-gold-deep">
                   {event.time}
                 </span>
-                <span className="font-sans text-sm leading-relaxed text-ink">
-                  {event.title}
-                </span>
+                <span className="font-sans text-[11px] text-ink">{event.title}</span>
               </li>
             ))}
           </ul>
