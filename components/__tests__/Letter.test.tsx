@@ -25,7 +25,7 @@ describe("Letter", () => {
     render(<Letter invitation={invitation} />);
     const img = screen.getByRole("img");
     expect(img).toHaveAttribute("src", invitation.photo);
-    expect(img.getAttribute("alt")?.length).toBeGreaterThan(0);
+    expect(img).toHaveAttribute("alt", `รูป${invitation.nakName}`);
   });
 
   it("renders all schedule events from the data", () => {

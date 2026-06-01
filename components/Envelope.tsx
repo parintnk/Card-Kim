@@ -19,7 +19,7 @@ export default function Envelope({ invitation }: { invitation: Invitation }) {
         <motion.div
           initial={reduceMotion ? false : { y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={reduceMotion ? { duration: 0 } : { duration: 0.6, ease: "easeOut" }}
           className="w-full"
         >
           <Letter invitation={invitation} />
