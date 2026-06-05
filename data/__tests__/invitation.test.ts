@@ -16,14 +16,15 @@ describe("invitation data", () => {
     const day13 = invitation.schedule[1];
     expect(day13.date).toBe("วันที่ 13");
     expect(day13.events).toEqual([
-      { time: "10:00", title: "รับประทานอาหาร" },
+      { time: "10:00", title: "ร่วมรับประทานอาหาร" },
       { time: "11:00", title: "นำนาคเข้าสู่โบสถ์" },
       { time: "12:30", title: "เริ่มพิธีบวช" },
     ]);
   });
 
-  it("exposes the photo, map link, and core copy fields", () => {
+  it("exposes the date, photo, map link, and core copy fields", () => {
     expect(invitation.photo).toBe("/nak.jpg");
+    expect(invitation.eventDate.length).toBeGreaterThan(0);
     expect(invitation.nakName.length).toBeGreaterThan(0);
     expect(invitation.invitationText.length).toBeGreaterThan(0);
     expect(invitation.blessing.length).toBeGreaterThan(0);

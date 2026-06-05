@@ -10,6 +10,7 @@ export type ScheduleDay = {
 
 export type Invitation = {
   nakName: string;
+  eventDate: string;
   parents: string;
   templeOrVenue: string;
   mapUrl: string;
@@ -19,9 +20,9 @@ export type Invitation = {
   schedule: ScheduleDay[];
 };
 
-// Edit these fields with the real details. nakName is still a placeholder.
 export const invitation: Invitation = {
   nakName: "นาค ณัฏฐ์เดช คืนตัก",
+  eventDate: "13 กรกฎาคม 2569",
   parents: "บุตรของ คุณพ่อสุวัจชัย คืนตัก · คุณแม่โสภิญญา เทียนโชติ",
   templeOrVenue: "ณ วัดหนองกุ่มสุมังคลาราม จ.ประจวบคีรีขันธ์",
   mapUrl:
@@ -42,7 +43,7 @@ export const invitation: Invitation = {
     {
       date: "วันที่ 13",
       events: [
-        { time: "10:00", title: "รับประทานอาหาร" },
+        { time: "10:00", title: "ร่วมรับประทานอาหาร" },
         { time: "11:00", title: "นำนาคเข้าสู่โบสถ์" },
         { time: "12:30", title: "เริ่มพิธีบวช" },
       ],

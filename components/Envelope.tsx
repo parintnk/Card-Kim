@@ -103,7 +103,12 @@ export default function Envelope({ invitation }: { invitation: Invitation }) {
           <div className="idle-float flex flex-col items-center">
             <ClosedEnvelope />
             <p className="mt-7 font-serif text-lg text-ink">งานอุปสมบท</p>
-            <p className="mt-3 font-sans text-xs uppercase tracking-[0.35em] text-muted">
+            <p className="mt-2 flex items-center gap-2.5 font-serif text-sm text-gold-deep">
+              <span aria-hidden className="h-px w-5 bg-gold/50" />
+              {invitation.eventDate}
+              <span aria-hidden className="h-px w-5 bg-gold/50" />
+            </p>
+            <p className="mt-4 font-sans text-xs uppercase tracking-[0.35em] text-muted">
               แตะเพื่อเปิด
             </p>
           </div>
