@@ -49,10 +49,32 @@ export default function Letter({ invitation }: { invitation: Invitation }) {
           </div>
         </div>
 
-        <div className="reveal-item flex flex-col items-center gap-0.5" style={at(2)}>
+        <div className="reveal-item flex flex-col items-center gap-1" style={at(2)}>
           <h2 className="font-serif text-lg text-ink">{invitation.nakName}</h2>
           <p className="font-sans text-xs text-muted">{invitation.parents}</p>
           <p className="font-sans text-xs text-muted">{invitation.templeOrVenue}</p>
+          <a
+            href={invitation.mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1.5 inline-flex items-center gap-1.5 rounded-full border border-gold/40 px-3.5 py-1.5 font-sans text-[11px] text-gold-deep transition-colors hover:bg-gold/10"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            ดูแผนที่
+          </a>
         </div>
 
         <p
@@ -68,6 +90,15 @@ export default function Letter({ invitation }: { invitation: Invitation }) {
 
         <div className="reveal-item w-full" style={at(5)}>
           <Schedule days={invitation.schedule} />
+        </div>
+
+        <div className="reveal-item flex flex-col items-center gap-2" style={at(6)}>
+          <span className="text-base text-gold-deep" aria-hidden>
+            ❀
+          </span>
+          <p className="max-w-72 whitespace-pre-line font-serif text-[13px] leading-relaxed text-ink/80">
+            {invitation.blessing}
+          </p>
         </div>
       </article>
     </div>

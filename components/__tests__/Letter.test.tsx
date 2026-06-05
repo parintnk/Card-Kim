@@ -30,7 +30,7 @@ describe("Letter", () => {
 
   it("renders all schedule events from the data", () => {
     render(<Letter invitation={invitation} />);
-    expect(screen.getByText("โกนผม")).toBeInTheDocument();
+    expect(screen.getByText("ปลงผมนาค")).toBeInTheDocument();
     expect(screen.getByText("เริ่มพิธีบวช")).toBeInTheDocument();
   });
 });
